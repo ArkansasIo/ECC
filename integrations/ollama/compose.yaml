@@ -1,0 +1,14 @@
+# Optional local model runtime. For native Windows, prefer the official Ollama installer.
+# This service image is maintained upstream; pin a reviewed version/digest for production.
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ecc-ollama
+    ports:
+      - "127.0.0.1:11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    restart: unless-stopped
+
+volumes:
+  ollama-data:
