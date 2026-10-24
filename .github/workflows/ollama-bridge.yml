@@ -1,0 +1,31 @@
+name: ECC Ollama bridge
+
+on:
+  push:
+    branches: [main, "feature/ollama-local-runtime"]
+    paths:
+      - "integrations/ollama/**"
+      - ".github/workflows/ollama-bridge.yml"
+  pull_request:
+    paths:
+      - "integrations/ollama/**"
+      - ".github/workflows/ollama-bridge.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run offline smoke tests
+        run: node integrations/ollama/test/smoke.test.js
+      - name: Check syntax
+        run: node --check integrations/ollama/cli.js
